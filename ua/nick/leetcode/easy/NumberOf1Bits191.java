@@ -42,16 +42,17 @@ If this function is called many times, how would you optimize it?
 public class NumberOf1Bits191 {
 
     public static void main(String[] args) {
-        System.out.println(hammingWeight(1111111111));
+        System.out.println(hammingWeight(-3));
     }
 
     public static int hammingWeight(int n) {
         int answer = 0;
-        for (Character ch : Integer.toBinaryString(n).toCharArray()) {
-            if (ch.equals('1')) {
-                ++answer;
-            }
+        
+        for (int i = 0; i < 32; ++i) {
+            answer += n & 1;
+            n = n >> 1;
         }
+
         return answer;
     }
 }
