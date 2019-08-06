@@ -29,7 +29,7 @@ import java.util.Set;
 public class ContainsDuplicate217 {
 
     public static void main(String[] args) {
-        int[] nums = new int[]{1, 2, 3, 4, 5, 8,7};
+        int[] nums = new int[]{1, 2, 3, 4, 5, 8, 7};
 
         System.out.println(containsDuplicate(nums));
     }
@@ -37,13 +37,12 @@ public class ContainsDuplicate217 {
     public static boolean containsDuplicate(int[] nums) {
         boolean answer = false;
         Set<Integer> valuesOfNums = new HashSet<>(nums.length);
-        int i = 0;
-        while (i < nums.length && valuesOfNums.add(nums[i])) {
-            ++i;
-        }
 
-        if (i != nums.length) {
-            answer = true;
+        for (int i = 0; i < nums.length; ++i) {
+            if (!valuesOfNums.add(nums[i])) {
+                answer = true;
+                break;
+            }
         }
 
         return answer;
