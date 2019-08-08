@@ -29,30 +29,35 @@ package ua.nick.leetcode.easy;
 * */
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class IsomorphicStrings205 {
 
     public static void main(String[] args) {
-        System.out.println(isIsomorphic("paper", "title"));
+        System.out.println(isIsomorphic("ab", "ab"));
     }
 
     public static boolean isIsomorphic(String s, String t) {
         boolean answer = true;
         if (s.length() == t.length()) {
+            char[] sChars = s.toCharArray(), tChars = t.toCharArray();
             Map<Character, Character> mapIsomorphicCharacters = new HashMap<>(s.length());
-            for (int i = 0; i < s.length(); ++i) {
-                if(mapIsomorphicCharacters.containsKey(s.charAt(i))){
-                    if(mapIsomorphicCharacters.get(s.charAt(i))!=t.charAt(i)){
+            Set<Character> tCharactersSet = new HashSet<>(t.length());
+
+            for (int i = 0; i < sChars.length; ++i) {
+                if (mapIsomorphicCharacters.containsKey(sChars[i])) {
+                    if (mapIsomorphicCharacters.get(sChars[i]) != tChars[i]) {
                         answer = false;
                         break;
                     }
                 } else {
-                    if(mapIsomorphicCharacters.containsValue(t.charAt(i))){
+                    if (!tCharactersSet.add(tChars[i])) {
                         answer = false;
                         break;
                     }
-                    mapIsomorphicCharacters.put(s.charAt(i),t.charAt(i));
+                    mapIsomorphicCharacters.put(sChars[i], tChars[i]);
                 }
             }
         } else {
