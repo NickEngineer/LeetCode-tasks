@@ -68,27 +68,47 @@ public class RomanToInteger13 {
 
     public static int romanToInt(String s) {
         char[] sChars = s.toCharArray();
-        int romanValueAsInt = 0;
-        Map<Character, Integer> romanNumbers = new HashMap<>(7);
-        romanNumbers.put('I', 1);
-        romanNumbers.put('V', 5);
-        romanNumbers.put('X', 10);
-        romanNumbers.put('L', 50);
-        romanNumbers.put('C', 100);
-        romanNumbers.put('D', 500);
-        romanNumbers.put('M', 1000);
+        int romanValueAsInt = 0, rVal, rNextVal;
 
-        for (int i = 0; i < sChars.length; ++i) {
-            if (i + 1 < sChars.length
-                    && romanNumbers.get(sChars[i]) < romanNumbers.get(sChars[i + 1])) {
-                romanValueAsInt += romanNumbers.get(sChars[i + 1])
-                        - romanNumbers.get(sChars[i]);
+        Object[][] rNumbers = new Object[][]{
+                {'I', 1},
+                {'V', 5},
+                {'X', 10},
+                {'L', 50},
+                {'C', 100},
+                {'D', 500},
+                {'M', 1000},
+        };
+
+        for (int i = 0; i < sChars.length - 1; ++i) {
+            rVal = getRIntValue(rNumbers, sChars[i]);
+            rNextVal = getRIntValue(rNumbers, sChars[i + 1]);
+            if (rVal < rNextVal) {
+                romanValueAsInt += rNextVal
+                        - rVal;
                 ++i;
             } else {
-                romanValueAsInt += romanNumbers.get(sChars[i]);
+                romanValueAsInt += rVal;
             }
         }
 
+        if (sChars.length == 1 || (sChars.length > 1
+                && getRIntValue(rNumbers, sChars[sChars.length - 2])
+                >= getRIntValue(rNumbers, sChars[sChars.length - 1]))) {
+            romanValueAsInt += getRIntValue(rNumbers, sChars[sChars.length - 1]);
+        }
+
         return romanValueAsInt;
+    }
+
+    private static int getRIntValue(Object[][] arr, char r) {
+        int value = 0;
+        for (int i = 0; i < arr.length; ++i) {
+            if ((Character) arr[i][0] == r) {
+                value = (Integer) arr[i][1];
+                break;
+            }
+        }
+        return value;
     }
 }
