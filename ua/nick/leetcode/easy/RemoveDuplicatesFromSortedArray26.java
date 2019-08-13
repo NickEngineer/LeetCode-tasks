@@ -43,9 +43,9 @@ public class RemoveDuplicatesFromSortedArray26 {
     public static int removeDuplicates(int[] nums) {
         int pointer = 0;
 
-        for (int num : nums) {
-            if (num != nums[pointer]) {
-                nums[++pointer] = num;
+        for (int i = 0; i < nums.length; ++i) {
+            if (nums[i] != nums[pointer]) {
+                nums[++pointer] = nums[i];
             }
         }
 
