@@ -44,36 +44,6 @@ public class RemoveElement27 {
     }
 
     public static int removeElement(int[] nums, int val) {
-        /*int newSize = nums.length, nextElem = 0, pointer;
-        for (int i = 0; i < nums.length; ++i) {
-            if (nums[i] == val) {
-                pointer = ++nextElem + i;
-                while (pointer < nums.length) {
-                    if (nums[pointer] != val) {
-                        nums[i] = nums[pointer];
-                        break;
-                    }
-                    ++pointer;
-                    ++nextElem;
-                }
-                if (pointer == nums.length) {
-                    break;
-                }
-            } else {
-                if (i + nextElem < nums.length) {
-                    while (i + nextElem < nums.length && nums[i + nextElem] == val) {
-                        ++nextElem;
-                    }
-
-                    if (nextElem + i + 1 >= nums.length) {
-                        break;
-                    }
-                    nums[i] = nums[i + nextElem];
-                } else {
-                    break;
-                }
-            }
-        }*/
         int lastStart = nums.length - 1;
 
         for (int i = 0; i < nums.length; ++i) {
