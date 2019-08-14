@@ -30,14 +30,13 @@ public class LongestValidParentheses32 {
     }
 
     public static int longestValidParentheses(String s) {
-        int maxValidSize = 0, tempSize = 0, normalClosed = 0, lastOpened = 0;
+        int maxValidSize = 0, tempSize = 0;
         char[] sChars = s.toCharArray();
         Stack<Character> openBrackets = new Stack<>();
 
         for (int i = 0; i < sChars.length; ++i) {
-            if (sChars[i] == '(' || sChars[i] == '[' || sChars[i] == '{') {
+            if (sChars[i] == '(') {
                 openBrackets.push(sChars[i]);
-                ++lastOpened;
             } else if (openBrackets.size() == 0) {
                 tempSize *= 2;
                 if (tempSize > maxValidSize) {
@@ -45,15 +44,7 @@ public class LongestValidParentheses32 {
                 }
                 tempSize = 0;
                 openBrackets.clear();
-                ++normalClosed;
-                lastOpened = 0;
             } else if (sChars[i] == ')' && openBrackets.peek() == '(') {
-                openBrackets.pop();
-                ++tempSize;
-            } else if (sChars[i] == ']' && openBrackets.peek() == '[') {
-                openBrackets.pop();
-                ++tempSize;
-            } else if (sChars[i] == '}' && openBrackets.peek() == '{') {
                 openBrackets.pop();
                 ++tempSize;
             } else {
@@ -63,19 +54,18 @@ public class LongestValidParentheses32 {
                 }
                 tempSize = 0;
                 openBrackets.clear();
-                lastOpened = 0;
             }
         }
 
 
         if (openBrackets.size() != 0) {
-            int forLimiter = sChars.length - tempSize * 2 - openBrackets.size();;
+            int forLimiter = sChars.length - tempSize * 2 - openBrackets.size();
+            ;
             tempSize = 0;
             openBrackets.clear();
 
-
             for (int i = sChars.length - 1; i >= forLimiter; --i) {
-                if (sChars[i] == ')' || sChars[i] == ']' || sChars[i] == '}') {
+                if (sChars[i] == ')') {
                     openBrackets.push(sChars[i]);
                 } else if (openBrackets.size() == 0) {
                     tempSize *= 2;
@@ -85,12 +75,6 @@ public class LongestValidParentheses32 {
                     tempSize = 0;
                     openBrackets.clear();
                 } else if (sChars[i] == '(' && openBrackets.peek() == ')') {
-                    openBrackets.pop();
-                    ++tempSize;
-                } else if (sChars[i] == '[' && openBrackets.peek() == ']') {
-                    openBrackets.pop();
-                    ++tempSize;
-                } else if (sChars[i] == '{' && openBrackets.peek() == '}') {
                     openBrackets.pop();
                     ++tempSize;
                 } else {
