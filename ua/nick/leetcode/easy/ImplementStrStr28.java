@@ -47,7 +47,6 @@ public class ImplementStrStr28 {
                 if (haystackChars.length - i >= needleChars.length) {
                     for (int j = 0; j < needleChars.length && pointer < haystackChars.length; ++j) {
                         if (haystackChars[pointer] != needleChars[j]) {
-                            counter = 0;
                             break;
                         }
                         ++pointer;
