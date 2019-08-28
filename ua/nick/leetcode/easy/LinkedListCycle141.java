@@ -57,8 +57,8 @@ public class LinkedListCycle141 {
 
     public static boolean hasCycle(ListNode head) {
         boolean isCycle = false;
-        ListNode pointer = head, temp;
-        Set<Integer> values = new HashSet<>();
+        ListNode pointer = head;
+        /*Set<Integer> values = new HashSet<>();
         Set<ListNode> nodes = new HashSet<>();
 
         if (pointer != null) {
@@ -73,8 +73,47 @@ public class LinkedListCycle141 {
 
                 pointer = pointer.next;
             }
+        }*/
+
+        /*Set<ListNode> nodes = new HashSet<>();
+
+        if (pointer != null) {
+            while (pointer.next != null) {
+
+                if (!nodes.add(pointer)) {
+                    isCycle = true;
+                    break;
+                }
+
+                pointer = pointer.next;
+            }
+        }*/
+        if (pointer != null) {
+            for (int i = 0; pointer.next != null; ++i) {
+                if (isCheckNextCycle(pointer, i)) {
+                    isCycle = true;
+                    break;
+                }
+                pointer = pointer.next;
+            }
         }
 
+        return isCycle;
+    }
+
+    private static boolean isCheckNextCycle(ListNode pointer, int position) {
+        boolean isCycle = false;
+        ListNode check = pointer;
+
+        for (int i = 0; i < position; ++i) {
+            check = check.next;
+            if (check == null) {
+                break;
+            } else if (check == pointer) {
+                isCycle = true;
+                break;
+            }
+        }
         return isCycle;
     }
 }
