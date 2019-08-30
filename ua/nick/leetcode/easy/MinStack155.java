@@ -1,5 +1,6 @@
 package ua.nick.leetcode.easy;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,6 +10,22 @@ public class MinStack155 {
         MinStack155 minS = new MinStack155();
         minS.push(-2);
         minS.push(0);
+        minS.push(-6);
+        minS.push(0);
+        minS.push(5);
+        minS.push(0);
+        minS.push(8);
+        minS.push(0);
+        minS.push(4);
+        minS.push(0);
+        minS.push(7);
+        minS.push(54);
+        minS.push(0);
+        minS.push(2);
+        minS.push(-3);
+        minS.push(-5);
+        minS.push(-3);
+        minS.push(-8);
         minS.push(-3);
         System.out.println(minS.getMin());
         minS.pop();
@@ -17,33 +34,35 @@ public class MinStack155 {
 
     }
 
-    List<Integer> values;
-    int valLength;
+    int[] values;
+    int top;
 
     public MinStack155() {
-        values = new LinkedList<>();
-        valLength = -1;
+        values = new int[16];
+        top = -1;
     }
 
     public void push(int x) {
-        values.add(x);
-        ++valLength;
+        if (values.length == top + 1) {
+            values = Arrays.copyOf(values, top + 16);
+        }
+
+        values[++top] = x;
     }
 
     public void pop() {
-        values.remove(valLength);
-        --valLength;
+        --top;
     }
 
     public int top() {
-        return values.get(valLength);
+        return values[top];
     }
 
     public int getMin() {
         int minValue = Integer.MAX_VALUE;
-        for (Integer val : values) {
-            if (val < minValue) {
-                minValue = val;
+        for (int i = 0; i <= top; ++i) {
+            if (values[i] < minValue) {
+                minValue = values[i];
             }
         }
         return minValue;
