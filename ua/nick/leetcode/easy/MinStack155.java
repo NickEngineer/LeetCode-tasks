@@ -34,36 +34,61 @@ public class MinStack155 {
 
     }
 
-    int[] values;
-    int top;
+    private static class ListNode {
+        int val;
+        ListNode next;
+        ListNode before;
+
+        ListNode(int x) {
+            val = x;
+            next = null;
+            before = null;
+        }
+    }
+
+    private ListNode head;
+    private ListNode top;
+    private ListNode tempPointer;
 
     public MinStack155() {
-        values = new int[16];
-        top = -1;
+        head = null;
+        top = null;
     }
 
     public void push(int x) {
-        if (values.length == top + 1) {
-            values = Arrays.copyOf(values, top + 16);
+        if (top != null) {
+            tempPointer = top;
+            top = new ListNode(x);
+            top.before = tempPointer;
+            tempPointer.next = top;
+        } else {
+            head = new ListNode(x);
+            top = head;
         }
-
-        values[++top] = x;
     }
 
     public void pop() {
-        --top;
+        top = top.before;
+
+        if (top != null) {
+            top.next = null;
+        }
+
     }
 
     public int top() {
-        return values[top];
+        return top.val;
     }
 
     public int getMin() {
+        tempPointer = head;
         int minValue = Integer.MAX_VALUE;
-        for (int i = 0; i <= top; ++i) {
-            if (values[i] < minValue) {
-                minValue = values[i];
+
+        while (tempPointer != null) {
+            if (tempPointer.val < minValue) {
+                minValue = tempPointer.val;
             }
+            tempPointer = tempPointer.next;
         }
         return minValue;
     }
