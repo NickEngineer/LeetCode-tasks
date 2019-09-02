@@ -39,9 +39,9 @@ public class SymmetricTree101 {
     public static void main(String[] args) {
         TreeNode root = new TreeNode(1);
         root.left = new TreeNode(2);
-        root.right = new TreeNode(2);
-        root.left.right = new TreeNode(3);
-        root.right.left = new TreeNode(3);
+        root.right = new TreeNode(3);
+        /*root.left.right = new TreeNode(3);
+        root.right.right = new TreeNode(3);*/
 
         System.out.println(isSymmetric(root));
     }
@@ -56,78 +56,54 @@ public class SymmetricTree101 {
         }
     }
 
+    private static class MyResult {
+        private boolean result;
+
+        MyResult() {
+            result = true;
+        }
+
+        public boolean getResult() {
+            return result;
+        }
+
+        public void setResult(boolean result) {
+            this.result = result;
+        }
+    }
+
     public static boolean isSymmetric(TreeNode root) {
-        boolean result = true;
 
-        if(root!=null){
-            TreeNode left, right;
+        MyResult result = new MyResult();
 
-            List<TreeNode> myLeftTree = new LinkedList<>();
-            List<TreeNode> myRightTree = new LinkedList<>();
+        if (root != null) {
+            TreeNode left = root.left, right = root.right;
+            checkTreeSymmetric(left, right, result);
+        }
 
-            if (root.left != null) {
-                myLeftTree.add(root.left);
-            }
+        return result.getResult();
+    }
 
-            if (root.right != null) {
-                myRightTree.add(root.right);
-            }
+    private static void checkTreeSymmetric(TreeNode left, TreeNode right, MyResult result) {
 
-            getLeftTree(root.left, myLeftTree);
-            getRightTree(root.right, myRightTree);
-
-            Iterator<TreeNode> leftIterator = myLeftTree.iterator();
-            Iterator<TreeNode> rightIterator = myRightTree.iterator();
-
-
-            while (leftIterator.hasNext() && rightIterator.hasNext()) {
-                left = leftIterator.next();
-                right = rightIterator.next();
-
-                if (left != null && right != null) {
-                    if (left.val != right.val) {
-                        result = false;
-                        break;
-                    }
-                } else if (left != right) {
-                    result = false;
-                    break;
+        if (result.getResult()) {
+            if (left != null && right != null) {
+                if (left.val != right.val) {
+                    result.setResult(false);
+                    return;
                 }
-            }
 
-            if (leftIterator.hasNext() || rightIterator.hasNext()) {
-                result = false;
-            }
-        } else {
-            result = false;
-        }
+                checkTreeSymmetric(left.left, right.right, result);
 
-        return result;
-    }
+                if(result.getResult()){
+                    checkTreeSymmetric(left.right, right.left, result);
+                }
 
-    private static void getLeftTree(TreeNode root, List<TreeNode> tree) {
-
-        if (root != null) {
-            if (root.left != null || root.right != null) {
-                tree.add(root.left);
-                getLeftTree(root.left, tree);
-
-                tree.add(root.right);
-                getLeftTree(root.right, tree);
+            } else if (!(left == null && right == null)) {
+                result.setResult(false);
+                return;
             }
         }
-    }
 
-    private static void getRightTree(TreeNode root, List<TreeNode> tree) {
-
-        if (root != null) {
-            if (root.left != null || root.right != null) {
-                tree.add(root.right);
-                getRightTree(root.right, tree);
-
-                tree.add(root.left);
-                getRightTree(root.left, tree);
-            }
-        }
     }
 }
