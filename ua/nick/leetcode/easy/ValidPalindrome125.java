@@ -26,28 +26,39 @@ import java.util.regex.Pattern;
 
 public class ValidPalindrome125 {
     public static void main(String[] args) {
-        System.out.println(isPalindrome("_A man, a plan, a canal: Panama_"));
+        System.out.println(isPalindrome("Pp0"));
     }
 
     public static boolean isPalindrome(String s) {
-        boolean result = false;
+        boolean result = true;
 
-        String pattern = "[\\w]+";
+        if (s.length() > 1) {
+            int limiter = s.length() / 2 + s.length() % 2;
+            char[] stringChars = s.toLowerCase().toCharArray();
 
-        Pattern r = Pattern.compile(pattern);
+            top:
+            for (int i = 0, j = s.length() - 1; i < limiter; ++i, --j) {
 
-        Matcher mExp;
+                while (!((stringChars[i] > 47 && stringChars[i] < 58)
+                        || (stringChars[i] > 96 && stringChars[i] < 123))) {
+                    ++i;
+                    if (i >= stringChars.length) {
+                        break top;
+                    }
+                }
+                while (!((stringChars[j] > 47 && stringChars[j] < 58)
+                        || (stringChars[j] > 96 && stringChars[j] < 123))) {
+                    --j;
+                    if (j < 0) {
+                        break top;
+                    }
+                }
 
-        mExp = r.matcher(s);
-
-        StringBuilder filteredString = new StringBuilder();
-
-        while (mExp.find()) {
-            filteredString.append(mExp.group().toLowerCase());
-        }
-
-        if (filteredString.toString().equals(filteredString.reverse().toString())) {
-            result = true;
+                if (stringChars[i] != stringChars[j]) {
+                    result = false;
+                    break;
+                }
+            }
         }
 
         return result;
