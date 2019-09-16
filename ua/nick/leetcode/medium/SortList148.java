@@ -24,14 +24,15 @@ import java.util.Map;
 public class SortList148 {
 
     public static void main(String[] args) {
-        //-1->5->3->4->0 error
+
         ListNode head = new ListNode(-700);
         head.next = new ListNode(5);
         head.next.next = new ListNode(-3);
-        head.next.next.next = new ListNode(4);
+        head.next.next.next = new ListNode(400);
         head.next.next.next.next = new ListNode(50);
-        //head.next.next.next.next.next = new ListNode(-1);
-        System.out.println(sortList(head));
+        head.next.next.next.next.next = new ListNode(-1);
+        ListNode sortedHead = sortList(head);
+        System.out.println(sortedHead);
     }
 
     public static class ListNode {
@@ -44,107 +45,60 @@ public class SortList148 {
     }
 
     public static ListNode sortList(ListNode head) {
-        ListNode minNode = head, beforeStartNode = null;
-        ListNode startNode = head;
-        ListNode node;
+        ListNode newHead = null;
 
+        int all = 0, ifComp = 0;
         if (head != null) {
-            int minNodeLength = 0, startNodeLength = 0, counter = 0;
-            head = head.next;
+            ListNode lastElemOfNewSequence = null;
+            ListNode minNode = head;
+            ListNode startNode = head;
+            ListNode beforeElem = null, beforeMinElem = null;
 
-            while (head != null) {
-                node = head;
-                head = head.next;
-                if (startNode.val > node.val) {
-                    ++minNodeLength;
-                    node.next = startNode;
-                    if (minNodeLength == 1) {
-                        minNode = node;
-                        beforeStartNode = node;
-                    } else {
-                        beforeStartNode.next = node;
-                        beforeStartNode = node;
-                    }
-                } else {
-                    ++startNodeLength;
-                    if (startNodeLength == 1) {
-                        node.next = null;
-                    } else {
-                        node.next = startNode.next;
-                    }
+            while (startNode != null) {
 
-                    startNode.next = node;
+                if (head == null) {
+                    beforeMinElem = null;
                 }
+
+                while (head != null) {
+                    ++all;
+                    if (head.val < minNode.val) {
+                        ++ifComp;
+                        beforeMinElem = beforeElem;
+                        minNode = head;
+                    }
+                    beforeElem = head;
+                    head = head.next;
+                }
+
+                if (beforeMinElem != null) {
+                    beforeMinElem.next = minNode.next;
+                }
+
+
+                if (newHead != null) {
+                    lastElemOfNewSequence.next = minNode;
+                    lastElemOfNewSequence = lastElemOfNewSequence.next;
+                } else {
+                    newHead = minNode;
+                    lastElemOfNewSequence = newHead;
+                }
+
+
+                if (minNode == startNode) {
+                    startNode = startNode.next;
+                }
+                head = startNode;
+                minNode = head;
+                beforeElem = null;
+                beforeMinElem = null;
             }
 
-            if (startNodeLength == 0) {
-                startNode.next = null;
-            }
-
-            if (minNodeLength > 1) {
-                minNode = sortElement(null, minNode, startNode);
-            }
-
-            if (startNodeLength > 1) {
-                sortElement(startNode, startNode.next, null);
-            }
         }
 
-        return minNode;
-    }
+        System.out.println(all);
+        System.out.println(ifComp);
 
-    private static ListNode sortElement(ListNode beforeHead, ListNode head, ListNode nextBlock) {
-        ListNode minNode = head, beforeStartNode = beforeHead;
-        ListNode startNode = head;
-        ListNode node;
-
-        if (head != null && head != nextBlock) {
-            int minNodeLength = 0, startNodeLength = 0;
-            head = head.next;
-
-            while (head != nextBlock) {
-                node = head;
-                head = head.next;
-                if (startNode.val > node.val) {
-                    ++minNodeLength;
-                    node.next = startNode;
-                    if (minNodeLength == 1) {
-                        minNode = node;
-
-                        if (beforeStartNode != null) {
-                            beforeStartNode.next = node;
-                        }
-
-                        beforeStartNode = node;
-                    } else {
-                        beforeStartNode.next = node;
-                        beforeStartNode = node;
-                    }
-                } else {
-                    ++startNodeLength;
-                    if (startNodeLength == 1) {
-                        node.next = nextBlock;
-                    } else {
-                        node.next = startNode.next;
-                    }
-
-                    startNode.next = node;
-                }
-            }
-
-            if (startNodeLength == 0) {
-                startNode.next = nextBlock;
-            }
-
-            if (minNodeLength > 1) {
-                minNode = sortElement(beforeHead, minNode, startNode);
-            }
-
-            if (startNodeLength > 1) {
-                sortElement(startNode, startNode.next, nextBlock);
-            }
-        }
-
-        return minNode;
+        return newHead;
     }
 }
