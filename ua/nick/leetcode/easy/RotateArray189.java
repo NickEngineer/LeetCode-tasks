@@ -39,17 +39,22 @@ public class RotateArray189 {
     }
 
     public static void rotate(int[] nums, int k) {
-        int tempNumsNumberBefore = 0;
-        int tempNumsNumber = 0;
-
         if (nums != null && nums.length > 0) {
             int numberOfShifts = k % nums.length;
-            for (int j = 0; j < numberOfShifts; ++j) {
-                tempNumsNumberBefore = nums[nums.length - 1];
-                for (int i = 0; i < nums.length; ++i) {
-                    tempNumsNumber = nums[i];
-                    nums[i] = tempNumsNumberBefore;
-                    tempNumsNumberBefore = tempNumsNumber;
+
+            if (numberOfShifts > 0) {
+                int[] numsLustNumbersBuffer = new int[numberOfShifts];
+
+                for (int j = 1; j <= numberOfShifts; ++j) {
+                    numsLustNumbersBuffer[numsLustNumbersBuffer.length - j] = nums[nums.length - j];
+                }
+
+                for (int i = nums.length - numberOfShifts - 1; i >= 0; --i) {
+                    nums[i + numberOfShifts] = nums[i];
+                }
+
+                for (int j = 0; j < numberOfShifts; ++j) {
+                    nums[j] = numsLustNumbersBuffer[j];
                 }
             }
         }
