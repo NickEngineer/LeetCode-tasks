@@ -37,26 +37,29 @@ public class TwoSum2InputArrayIsSorted167 {
 
     public static int[] twoSum(int[] numbers, int target) {
         int[] result = new int[2];
-        int nextElemPosition = 1;
 
         if (numbers.length > 1) {
+            int middle = 0;
+            int sum = 0;
             top:
             for (int i = 0; i < numbers.length - 1; ++i) {
                 if (numbers[i] > target) {
                     break;
                 }
-                while (nextElemPosition < numbers.length) {
-                    if (numbers[i] + numbers[nextElemPosition] == target) {
+
+                for (int start = i + 1, finish = numbers.length - 1; start <= finish; ) {
+                    middle = (start + finish) / 2;
+                    sum = numbers[i] + numbers[middle];
+                    if (sum == target) {
                         result[0] = i + 1;
-                        result[1] = nextElemPosition + 1;
+                        result[1] = middle + 1;
                         break top;
+                    } else if (sum < target) {
+                        start = middle + 1;
+                    } else {
+                        finish = middle - 1;
                     }
-                    if (numbers[i] + numbers[nextElemPosition] > target) {
-                        break;
-                    }
-                    ++nextElemPosition;
                 }
-                nextElemPosition = i + 2;
             }
         }
 
