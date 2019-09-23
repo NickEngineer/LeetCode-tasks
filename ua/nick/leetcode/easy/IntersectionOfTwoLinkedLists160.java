@@ -73,19 +73,43 @@ public class IntersectionOfTwoLinkedLists160 {
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
         ListNode intersectionNode = null;
 
-        Set<ListNode> nodesPointers = new HashSet<>();
+        if (headA != null && headB != null) {
+            ListNode listALastNode = headA, listBLastNode = headB;
+            int listALength = 1, listBLength = 1;
 
-        while (headB != null) {
-            nodesPointers.add(headB);
-            headB = headB.next;
-        }
-
-        while (headA != null) {
-            if (nodesPointers.contains(headA)) {
-                intersectionNode = headA;
-                break;
+            while (listALastNode.next != null) {
+                listALastNode = listALastNode.next;
+                ++listALength;
             }
-            headA = headA.next;
+
+            while (listBLastNode.next != null) {
+                listBLastNode = listBLastNode.next;
+                ++listBLength;
+            }
+
+            if (listALastNode == listBLastNode) {
+                int differenceLengthOfLists = Math.abs(listALength - listBLength);
+
+                listALastNode = headA;
+                listBLastNode = headB;
+
+                if (listALength > listBLength) {
+                    for (int i = 0; i < differenceLengthOfLists; ++i) {
+                        listALastNode = listALastNode.next;
+                    }
+                } else {
+                    for (int i = 0; i < differenceLengthOfLists; ++i) {
+                        listBLastNode = listBLastNode.next;
+                    }
+                }
+
+                while (listALastNode != listBLastNode) {
+                    listALastNode = listALastNode.next;
+                    listBLastNode = listBLastNode.next;
+                }
+
+                intersectionNode = listALastNode;
+            }
         }
 
         return intersectionNode;
